@@ -15,3 +15,10 @@ RUN pip install --trusted-host pypi.org --trusted-host pypi.python.org --trusted
 # Run app.py when the container launches
 COPY . /app
 CMD python app.py
+
+FROM jenkins/jenkins:lts-jdk11
+USER root
+RUN apt-get update
+RUN apt-get install -y python3-pip
+# Install app dependencies
+RUN pip install --upgrade pip

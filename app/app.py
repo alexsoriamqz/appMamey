@@ -1,11 +1,17 @@
 import json
-from flask import Flask,  render_template, request, redirect, url_for, session # pip install Flask
-from typing import List, Dict
-from flask import Flask,  render_template, request, redirect, url_for, session # pip install Flask
-from notifypy import Notify
-from os import path #pip install notify-py
-import mysql.connector
+from os import path  # pip install notify-py
+from typing import Dict, List
 
+import mysql.connector
+from flask import (Flask, redirect, render_template,  # pip install Flask
+                   request, session, url_for, make_response,jsonify)
+
+EJER = {
+    "ejercicio1":"sentadilla",
+    "ejercicio2":"lagartija",
+    "ejercicio3":"abdomilas",
+    "ejercicio4":"levantamiento"
+}
 
 app = Flask(__name__)
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
@@ -30,7 +36,8 @@ def test_table() -> List[Dict]:
 @app.route('/')
 def index() -> str:
         #return json.dumps({'test_table': test_table()})
-        return render_template("contenido.html")    
+        #return render_template("contenido.html")
+        return render_template("contenido.html", res = EJER)
 @app.route('/layout', methods = ["GET", "POST"])
 def layout():
     session.clear()
@@ -50,8 +57,8 @@ def login():
              }
         connection = mysql.connector.connect(**config)
 
-        email = request.form['email']
-        password = request.form['password']
+        ejercicio = request.form['ejercicio']
+        nombreEjer = request.form['nombreEjer']
 
         cur = connection.cursor()
         cur.execute("SELECT * FROM users WHERE email=%s",(email,))
@@ -132,7 +139,54 @@ def registro():
         #notificacion.send()
         return redirect(url_for('login'))
 
+@app.route("/ObtenerEjercicios")
+def get_ejercicios():
+    res = make_response(jsonify(EJER),200)
+    return res
+
+@app.route("/ObtenerEjercicio/<ejercicio>")
+def get_ejercicio(ejercicio):
+    if ejercicio in EJER:
+        res = EJER.get(ejercicio)
+        return make_response(jsonify({"res":res}),200)
+
+    res = make_response(jsonify({"error":"not found"}),400)
+    return res
+
+@app.route("/AgregarEjer/<ejercicio>",methods=["POST"])
+def post_ejercicio(ejercicio):
+    req = request.get_json()
+
+    if ejercicio in EJER:
+        res = make_response(jsonify({"error": "El ejercicio ya existe"}))
+        return res
+
+    EJER.update(req)
+
+    res = make_response(jsonify({"message" : "ejercicio creato"}),201)
+    return res
+
+@app.route("/ModificarEjer/<ejercicio>",methods=["PUT"])
+def update_ejercicio(ejercicio):
+    req = request.get_json()
+
+    if ejercicio in EJER:
+        EJER[ejercicio] = req["new"]
+        res = make_response(jsonify({"res": EJER[ejercicio]}),200)
+        return res
+
+    res = make_response(jsonify({"error" : "no se pudo modificar"}),400)
+    return res
+
+@app.route("/eliminarEjercicio/<ejercicio>", methods=["DELETE"])
+def Delete_ejercicio(ejercicio):
+
+    if ejercicio in EJER:
+        del EJER[ejercicio]
+        res = make_response(jsonify(EJER),200)
+        return res
 
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0')
+
+#if __name__ == '__main__':
+#    app.run(host='0.0.0.0')

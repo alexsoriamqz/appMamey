@@ -5,7 +5,7 @@
 
 .menu{
     
-    background: #222509;
+    background: #a22259;
     height: 75px;
     width: 100vw;
     display: flex;
@@ -93,7 +93,7 @@ a{
     color: white;
     height: 40px;
     width: 90px;
-    background: #100a0d;
+    background: #94124a;
     font-size: 15px;
     margin-top: 20px;
     border-radius: 5px;
@@ -121,7 +121,7 @@ a{
 
 body{
     margin: 0;
-    background-image: url(../img/pesas.jpg);
+    background-image: url(../img/fondo3.jpg);
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
@@ -141,7 +141,7 @@ body:before{
     z-index: -1;
 }
 .entrada{
-    color: #090507;
+    color: #841947;
     font-size:x-large;
     margin-top: 200px;
     text-align: center;
@@ -173,7 +173,7 @@ body:before{
 
 .home{
     margin: 0;
-    background-image: url(../img/pesas.jpg);
+    background-image: url(../img/fondo2.jpg);
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
@@ -195,7 +195,7 @@ body:before{
 
 .home2{
     margin: 0;
-    background-image: url(../img/pesas.jpg);
+    background-image: url(../img/portada.jpg);
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;

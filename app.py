@@ -2,9 +2,10 @@ from flask import Flask,  render_template, request, redirect, url_for, session #
 from flask_mysqldb import MySQL,MySQLdb # pip install Flask-MySQLdb
 from os import path #pip install notify-py
 from notifypy import Notify
+
+
 app = Flask(__name__)
-app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
-app.config['MYSQL_HOST'] = 'localhost:3306'
+app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = ''
 app.config['MYSQL_DB'] = 'app_citas'
@@ -100,4 +101,5 @@ def registro():
 
 
 if __name__ == '__main__':
-    app.run('0.0.0.0')
+    app.secret_key = "pinchellave"
+    app.run(debug=True)
